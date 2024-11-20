@@ -1,0 +1,48 @@
+<%- include('./partials/header.ejs') %> <%- include('./partials/nav.ejs') %>
+
+<div
+  class="info1"
+  style="max-width: 700px; margin: 0 auto; border: 10px; padding-bottom: 10%"
+>
+  <% if(posts.length) { %>
+  <div>
+    <h1 style="text-align: center"><%=title%></h1>
+    <p>
+      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores
+      voluptas quod, ducimus dolorum architecto in, laboriosam quos totam soluta
+      fugiat, a illum quibusdam minus.
+    </p>
+
+    <ul class="list-posts">
+      <% {%> <%posts.forEach((post) => { %>
+        <div id="id_<%= post._id %>" class="" style="padding-top: 20px">
+          <span style="font-style: bold; font-size: 18px"><%= post.title %><br/></span>
+          <span style="color:darkgrey"><%= post.author %><br/></span>
+          <textarea cols="55" rows="10" readonly><%= post.content %></textarea>
+          <div style="display: flex; column-gap: 20px;"">
+            <a href="/edit-post/<%= post._id %>">Редагувати</a>
+            <a class="confirmDeletion" href="" data-id="<%= post._id %>">Видалити</a>
+          </div>
+          
+        </div>
+      <% })}; %>
+    </ul>
+  </div>
+  <%} else{%>
+  <h1>Ще не додано жодного допису...</h1>
+  <%}%>
+</div>
+
+<script>
+  document.addEventListener("click", (e) => {
+    const id = e.target?.dataset?.id || null;
+    if (id) {
+      fetch(`/posts/${id}`, {
+        method: "DELETE",
+      }).then(() => {
+        window.location.reload();
+      });
+    }
+  });
+</script>
+<%- include('./partials/footer.ejs') %>
